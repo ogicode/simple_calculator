@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calculator</title>
+  <style>
+    .calculator {
+      max-width: 200px;
+      margin: 0 auto;
+      padding: 1em;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .display {
+      margin-bottom: 1em;
+      padding: 0.5em;
+      border: 1px solid #888;
+      min-height: 2em;
+      font-size: 1.2em;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5em;
+    }
+    button {
+      padding: 0.5em;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div id="display" class="display"></div>
+    <div class="buttons">
+      <button onclick="handleButtonClick('7')">7</button>
+      <button onclick="handleButtonClick('8')">8</button>
+      <button onclick="handleButtonClick('9')">9</button>
+      <button onclick="handleButtonClick('+')">+</button>
+      <button onclick="handleButtonClick('4')">4</button>
+      <button onclick="handleButtonClick('5')">5</button>
+      <button onclick="handleButtonClick('6')">6</button>
+      <button onclick="handleButtonClick('-')">-</button>
+      <button onclick="handleButtonClick('1')">1</button>
+      <button onclick="handleButtonClick('2')">2</button>
+      <button onclick="handleButtonClick('3')">3</button>
+      <button onclick="handleButtonClick('*')">*</button>
+      <button onclick="handleButtonClick('0')">0</button>
+      <button onclick="handleButtonClick('=')">=</button>
+      <button onclick="handleButtonClick('C')">C</button>
+      <button onclick="handleButtonClick('/')">/</button>
+    </div>
+  </div>
+
+  <script>
+    let num1 = '';
+    let num2 = '';
+    let operator = '';
+    let result = '';
+
+    function handleButtonClick(value) {
+      if (['+', '-', '*', '/'].includes(value)) {
+        if (num1 !== '' && operator === '') {
+          operator = value;
+        }
+      } else if (value === '=') {
+        if (num1 !== '' && num2 !== '' && operator !== '') {
+          calculateResult();
+        }
+      } else if (value === 'C') {
+        num1 = '';
+        num2 = '';
+        operator = '';
+        result = '';
+        updateDisplay();
+      } else {
+        if (operator === '') {
+          num1 += value;
+        } else {
+          num2 += value;
+        }
+      }
+      updateDisplay();
+    }
+
+    function calculateResult() {
+      const n1 = parseFloat(num1);
+      const n2 = parseFloat(num2);
+
+      switch (operator) {
+        case '+':
+          result = n1 + n2;
+          break;
+        case '-':
+          result = n1 - n2;
+          break;
+        case '*':
+          result = n1 * n2;
+          break;
+        case '/':
+          result = n2 !== 0 ? n1 / n2 : 'Error: Division by zero';
+          break;
+      }
+
+      num1 = result.toString();
+      num2 = '';
+      operator = '';
+    }
+
+    function updateDisplay() {
+      document.getElementById('display').innerText = `${num1} ${operator} ${num2}`;
+      if (result !== '') {
+        document.getElementById('display').innerText += ` = ${result}`;
+      }
+    }
+  </script>
+</body>
+</html>
